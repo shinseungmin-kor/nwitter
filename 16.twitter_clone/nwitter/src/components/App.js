@@ -1,8 +1,9 @@
 import React from 'react';
+import AppRouter from './Router';
 
 function App() {
   return (
-    <div>This is twitter clone coding</div>
+    <AppRouter />
   );
 }
 
