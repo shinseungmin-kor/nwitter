@@ -1,13 +1,28 @@
 import { dbService } from "myBase";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Nweet from "../components/Nweet";
 
-const Home = () => {
+const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
+  const [nweets, setNweets] = useState([]);
+ 
+  
+  useEffect(() => {
+    dbService.collection("nweets").onSnapshot((snapshot) => {
+      const nweetArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setNweets(nweetArray)
+    });
+  },[]);
+
   const onSubmit = async(event) => {
     event.preventDefault();
     await dbService.collection("nweets").add({
-        nweet,
+        text: nweet,
         createdAt: Date.now(),
+        creatorId: userObj.uid,
     });
     setNweet("");
   };
@@ -17,6 +32,7 @@ const Home = () => {
     } = event;
     setNweet(value);
   };
+  // console.log(nweets) 
 
   return (
     <div>
@@ -30,6 +46,15 @@ const Home = () => {
         />
         <input type="submit" value="Nweet" />
       </form>
+      <div>
+        {nweets.map((nweet) => (
+          <Nweet 
+          key={nweet.id} 
+          nweetObj={nweet}
+          isOwner={nweet.creatorId === userObj.uid}
+          />
+        ))}
+      </div>
     </div>
   );
 };
