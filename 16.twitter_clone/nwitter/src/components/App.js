@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import AppRouter from 'components/Router';
-import { authService } from 'myBase';
+import React, { useEffect, useState } from "react";
+import AppRouter from "components/Router";
+import { authService } from "myBase";
 
 function App() {
   // console.log(authService.currentUser);
@@ -22,8 +22,12 @@ function App() {
 
   return (
     <>
-    {init ? <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} /> : "Initializing..."}
-    <footer>&copy; {new Date().getFullYear()} Nwitter</footer>
+      {init ? (
+        <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} />
+      ) : (
+        "Initializing..."
+      )}
+      <footer>&copy; {new Date().getFullYear()} Nwitter</footer>
     </>
   );
 }
