@@ -7,23 +7,23 @@ const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState([]);
   const [attachment, setAttachment] = useState();
-  
+
   useEffect(() => {
     dbService.collection("nweets").onSnapshot((snapshot) => {
       const nweetArray = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      setNweets(nweetArray)
+      setNweets(nweetArray);
     });
-  },[]);
+  }, []);
 
   const onSubmit = async (event) => {
     event.preventDefault();
     const fileRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
     const response = await fileRef.putString(attachment, "data_url");
-    console.log(response)
-    
+    console.log(response);
+
     // await dbService.collection("nweets").add({
     //     text: nweet,
     //     createdAt: Date.now(),
@@ -37,7 +37,7 @@ const Home = ({ userObj }) => {
     } = event;
     setNweet(value);
   };
-  // console.log(nweets) 
+  // console.log(nweets)
 
   const onFileChange = (event) => {
     // console.log(event.target.files)
@@ -51,13 +51,13 @@ const Home = ({ userObj }) => {
         currentTarget: { result },
       } = finishedEvent;
       setAttachment(result);
-    }
+    };
     reader.readAsDataURL(theFile);
   };
 
   const onClearAttachment = () => {
-    setAttachment(null)
-  }
+    setAttachment(null);
+  };
 
   return (
     <div>
